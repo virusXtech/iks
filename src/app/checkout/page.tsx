@@ -11,6 +11,14 @@ import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { ShoppingBag } from 'lucide-react';
+import { OrderItemPayload, OrderPayload, OrderResponse } from '@/lib/types';
+
+interface IResponseResult {
+	success: boolean;
+	orderId?: string;
+	message: string;
+	variant?: string | null;
+}
 
 export default function CheckoutPage() {
 	const { cartItems, getCartTotal, clearCart, getItemCount } = useCart();
@@ -22,7 +30,6 @@ export default function CheckoutPage() {
 	const itemCount = getItemCount();
 
 	if (itemCount === 0 && !isSubmitting) {
-		// Prevent redirect if submitting and cart clears
 		return (
 			<div className='text-center py-20'>
 				<ShoppingBag className='mx-auto h-24 w-24 text-muted-foreground mb-6' />
@@ -45,34 +52,97 @@ export default function CheckoutPage() {
 	}
 
 	const handleCheckoutSubmit = async (data: CheckoutFormData) => {
-		setIsSubmitting(true);
-		// Simulate API call
-		await new Promise((resolve) => setTimeout(resolve, 1500));
-
-		const orderId = Date.now().toString();
-
-		let toastDescription = `Thank you, ${data.name}! Your order #${orderId} has been confirmed.`;
-		if (data.serviceType === 'table' && data.tableNumber) {
-			toastDescription += ` We'll bring it to table ${data.tableNumber}.`;
-		} else if (data.serviceType === 'self') {
-			toastDescription += ` Please pick it up at the counter when ready.`;
+		if (cartItems.length === 0) {
+			toast({
+				title: 'Your cart is empty!',
+				description: 'Please add items to your cart before placing an order.',
+				variant: 'destructive',
+			});
+			return;
 		}
 
-		toast({
-			title: 'Order Confirmed!',
-			description: toastDescription,
-		});
+		setIsSubmitting(true);
 
-		clearCart();
-		router.push(
-			`/confirmation/${orderId}?name=${encodeURIComponent(
-				data.name,
-			)}&serviceType=${data.serviceType}${
-				data.tableNumber
-					? `&tableNumber=${encodeURIComponent(data.tableNumber)}`
-					: ''
-			}`,
-		);
+		const orderItems: OrderItemPayload[] = cartItems.map((item) => ({
+			menu_item: item.id,
+			quantity: item.quantity,
+			price_at_order: item.price,
+		}));
+
+		const payload: OrderPayload = {
+			...data,
+			items: orderItems,
+		};
+
+		let result: IResponseResult | null = null;
+
+		try {
+			// Basic validation example (you'd typically use a library like Zod here)
+			if (!payload.customer_name || payload.customer_name.trim() === '') {
+				result = { success: false, message: 'Customer name is required.' };
+			}
+			if (
+				!payload.customer_phone ||
+				!/^\d{10,15}$/.test(payload.customer_phone)
+			) {
+				result = {
+					success: false,
+					message: 'Valid customer phone (10-15 digits) is required.',
+				};
+			}
+			if (!payload.items || payload.items.length === 0) {
+				result = { success: false, message: 'Cannot place an empty order.' };
+			}
+
+			const response = await fetch(
+				`${process.env.NEXT_PUBLIC_API_BASE_URL}/order/`,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(payload),
+				},
+			);
+			if (!response.ok) {
+				const errorData = await response
+					.json()
+					.catch(() => ({ message: 'Failed to place order' }));
+				throw new Error(errorData.message || 'Failed to place order');
+			}
+
+			const data: OrderResponse = await response.json();
+
+			result = {
+				success: true,
+				orderId: data.id,
+				message: 'Order placed successfully!',
+			};
+		} catch (error) {
+			console.error('Order submission error:', error);
+			let errorMessage = 'Failed to place order due to an unexpected error.';
+			if (error instanceof Error) {
+				errorMessage = error.message;
+			}
+			result = { success: false, message: errorMessage };
+		} finally {
+			setIsSubmitting(false);
+		}
+
+		if (result.success && result.orderId) {
+			toast({
+				title: 'Order Placed Successfully!',
+				description: `Your order ID is ${result.orderId}. Redirecting...`,
+			});
+			clearCart();
+			router.push(`/order/${result.orderId}`);
+		} else {
+			toast({
+				title: 'Order Failed',
+				description: result.message || 'An unknown error occurred.',
+				variant: 'destructive',
+			});
+		}
 	};
 
 	return (

@@ -52,13 +52,14 @@ export default function CartPage() {
 				</CardHeader>
 				<CardContent>
 					{cartItems.map((item) => (
-						<CartItemRow key={item.id} item={item} />
+						<CartItemRow key={item.id} cartItem={item} />
 					))}
 					<Separator className='my-6' />
 					<div className='flex justify-end items-center mt-6 space-x-4'>
 						<p className='text-xl font-semibold'>Total:</p>
 						<p className='text-3xl font-bold text-accent'>
-							€{total.toFixed(2)}
+							<span className='text-sm'>PLN</span>
+							{total.toFixed(2)}
 						</p>
 					</div>
 				</CardContent>

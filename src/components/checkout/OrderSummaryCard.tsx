@@ -34,12 +34,12 @@ const OrderSummaryCard = ({ items, total }: OrderSummaryCardProps) => {
 							>
 								<div className='flex items-center gap-3'>
 									<Image
-										src={item.imageUrl}
+										src={item.image || 'https://placehold.co/600x400.png'}
 										alt={item.name}
 										width={40}
 										height={40}
 										className='rounded-sm'
-										data-ai-hint={item.imageHint || 'food item'}
+										data-ai-hint='food item'
 									/>
 									<div>
 										<p className='font-medium'>
@@ -48,13 +48,15 @@ const OrderSummaryCard = ({ items, total }: OrderSummaryCardProps) => {
 												x {item.quantity}
 											</span>
 										</p>
-										<p className='text-xs text-muted-foreground'>
-											€{item.price.toFixed(2)} each
+										<p className='text-sm text-muted-foreground'>
+											<span className='text-base'>PLN</span>
+											{Number(item.price).toFixed(2)} each
 										</p>
 									</div>
 								</div>
 								<p className='font-semibold text-foreground'>
-									€{(item.price * item.quantity).toFixed(2)}
+									<span className='text-sm'>PLN</span>
+									{(+item.price * item.quantity).toFixed(2)}
 								</p>
 							</li>
 						))}
@@ -64,7 +66,10 @@ const OrderSummaryCard = ({ items, total }: OrderSummaryCardProps) => {
 			<CardFooter className='bg-muted/30 p-6 mt-4'>
 				<div className='flex justify-between items-center w-full'>
 					<p className='text-xl font-semibold text-foreground'>Grand Total:</p>
-					<p className='text-2xl font-bold text-accent'>€{total.toFixed(2)}</p>
+					<p className='text-2xl font-bold text-accent'>
+						<span className='text-sm'>PLN</span>
+						{total.toFixed(2)}
+					</p>
 				</div>
 			</CardFooter>
 		</Card>

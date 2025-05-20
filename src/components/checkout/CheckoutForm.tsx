@@ -27,26 +27,26 @@ import { ArrowLeft } from 'lucide-react';
 
 const checkoutSchema = z
 	.object({
-		name: z.string().min(2, 'Name must be at least 2 characters'),
-		phone: z
+		customer_name: z.string().min(2, 'Name must be at least 2 characters'),
+		customer_phone: z
 			.string()
 			.min(7, 'Phone number seems too short')
 			.regex(/^\+?[0-9\s-()]*$/, 'Invalid phone number format'),
-		serviceType: z.enum(['table', 'self'], {
+		service_type: z.enum(['table', 'self'], {
 			required_error: 'Please select a service type.',
 		}),
-		tableNumber: z.string().optional(),
+		table: z.string().optional(),
 		instructions: z.string().optional(),
 	})
 	.superRefine((data, ctx) => {
 		if (
-			data.serviceType === 'table' &&
-			(!data.tableNumber || data.tableNumber.trim() === '')
+			data.service_type === 'table' &&
+			(!data.table || data.table.trim() === '')
 		) {
 			ctx.addIssue({
 				code: z.ZodIssueCode.custom,
 				message: 'Table number is required for table service.',
-				path: ['tableNumber'],
+				path: ['table'],
 			});
 		}
 	});
@@ -62,15 +62,14 @@ const CheckoutForm = ({ onSubmit, isSubmitting }: CheckoutFormProps) => {
 	const form = useForm<CheckoutFormData>({
 		resolver: zodResolver(checkoutSchema),
 		defaultValues: {
-			name: '',
-			phone: '',
-			serviceType: 'self',
-			tableNumber: '',
+			customer_name: '',
+			customer_phone: '',
+			service_type: 'self',
 			instructions: '',
 		},
 	});
 
-	const serviceType = form.watch('serviceType');
+	const serviceType = form.watch('service_type');
 
 	return (
 		<Card className='shadow-lg'>
@@ -84,7 +83,7 @@ const CheckoutForm = ({ onSubmit, isSubmitting }: CheckoutFormProps) => {
 					<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
 						<FormField
 							control={form.control}
-							name='name'
+							name='customer_name'
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>Full Name</FormLabel>
@@ -97,7 +96,7 @@ const CheckoutForm = ({ onSubmit, isSubmitting }: CheckoutFormProps) => {
 						/>
 						<FormField
 							control={form.control}
-							name='phone'
+							name='customer_phone'
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>Phone Number (Optional)</FormLabel>
@@ -114,7 +113,7 @@ const CheckoutForm = ({ onSubmit, isSubmitting }: CheckoutFormProps) => {
 						/>
 						<FormField
 							control={form.control}
-							name='serviceType'
+							name='service_type'
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>Service Type</FormLabel>
@@ -140,12 +139,12 @@ const CheckoutForm = ({ onSubmit, isSubmitting }: CheckoutFormProps) => {
 						{serviceType === 'table' && (
 							<FormField
 								control={form.control}
-								name='tableNumber'
+								name='table'
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel>Table Number</FormLabel>
 										<FormControl>
-											<Input placeholder='e.g., 12A' {...field} />
+											<Input placeholder='e.g., 5' {...field} />
 										</FormControl>
 										<FormMessage />
 									</FormItem>
@@ -157,7 +156,7 @@ const CheckoutForm = ({ onSubmit, isSubmitting }: CheckoutFormProps) => {
 							name='instructions'
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Full Name</FormLabel>
+									<FormLabel>Instructions</FormLabel>
 									<FormControl>
 										<Textarea placeholder='Less Spicy' {...field} />
 									</FormControl>
