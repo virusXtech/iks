@@ -118,7 +118,7 @@ export default function CheckoutPage() {
         description: `Your order ID is ${result.orderId}. Redirecting...`,
       })
       clearCart()
-      router.push(`/order/${result.orderId}`)
+      router.push(`/order/${result.orderId}?fresh=true`)
     } else {
       toast({
         title: 'Order Failed',

@@ -7,19 +7,21 @@ import { CheckCircle, FileText, Terminal } from 'lucide-react'
 import type { Metadata } from 'next'
 
 type Props = {
-  params: { orderId: string; fresh: boolean }
+  params: { orderId: string }
+  searchParams: { fresh: boolean }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const id = params.orderId
+  const { orderId } = await params
   return {
-    title: `Order #${id}`,
-    description: `View details and status for order ${id}.`,
+    title: `Order #${orderId}`,
+    description: `View details and status for order ${orderId}.`,
   }
 }
 
-export default async function OrderPage({ params }: Props) {
-  const { orderId, fresh } = await params
+export default async function OrderPage({ params, searchParams }: Props) {
+  const { orderId } = await params
+  const { fresh } = await searchParams
   let order
   let error: string | null = null
 
