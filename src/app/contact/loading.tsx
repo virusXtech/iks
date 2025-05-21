@@ -1,12 +1,11 @@
-
-import { Skeleton } from "@/components/ui/skeleton";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Skeleton } from '@/components/ui/skeleton'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 
 export default function ContactLoading() {
   return (
     <div className="container mx-auto px-4 py-12">
       <Skeleton className="h-10 w-1/3 mx-auto mb-12" />
-      
+
       <div className="grid md:grid-cols-2 gap-12 items-start">
         <Card className="shadow-lg">
           <CardHeader>
@@ -27,7 +26,7 @@ export default function ContactLoading() {
             <Skeleton className="h-12 w-full" />
           </CardContent>
         </Card>
-        
+
         <div className="space-y-8">
           <div>
             <Skeleton className="h-7 w-1/2 mb-4" />
@@ -50,5 +49,5 @@ export default function ContactLoading() {
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -1,21 +1,15 @@
-'use client'; 
+'use client'
 
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
-import { Terminal } from "lucide-react";
-import { useEffect } from 'react';
- 
-export default function MenuError({
-  error,
-  reset,
-}: {
-  error: Error & { digest?: string };
-  reset: () => void;
-}) {
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Button } from '@/components/ui/button'
+import { Terminal } from 'lucide-react'
+import { useEffect } from 'react'
+
+export default function MenuError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
-    console.error(error);
-  }, [error]);
- 
+    console.error(error)
+  }, [error])
+
   return (
     <div className="container mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-[60vh]">
       <Alert variant="destructive" className="max-w-lg text-center">
@@ -36,5 +30,5 @@ export default function MenuError({
         </Button>
       </Alert>
     </div>
-  );
+  )
 }

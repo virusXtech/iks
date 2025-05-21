@@ -3,56 +3,56 @@
 @tailwind utilities;
 
 body {
-	font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
 
 @layer base {
-	:root {
-		--background: 45 50% 96%; /* Light Cream/Off-white */
-		--foreground: 60 2% 25%; /* Dark Warm Gray */
+  :root {
+    --background: 45 50% 96%; /* Light Cream/Off-white */
+    --foreground: 60 2% 25%; /* Dark Warm Gray */
 
-		--card: 45 50% 98%; /* Lighter Cream */
-		--card-foreground: 60 2% 25%;
+    --card: 45 50% 98%; /* Lighter Cream */
+    --card-foreground: 60 2% 25%;
 
-		--popover: 45 50% 98%; /* Lighter Cream */
-		--popover-foreground: 60 2% 25%;
+    --popover: 45 50% 98%; /* Lighter Cream */
+    --popover-foreground: 60 2% 25%;
 
-		--primary: 147 55% 23%; /* Dark Green from logo */
-		--primary-foreground: 45 50% 98%; /* Light Cream for text on dark green */
+    --primary: 147 55% 23%; /* Dark Green from logo */
+    --primary-foreground: 45 50% 98%; /* Light Cream for text on dark green */
 
-		--secondary: 147 30% 88%; /* Lighter, less saturated green */
-		--secondary-foreground: 147 55% 23%; /* Dark Green text on lighter green */
+    --secondary: 147 30% 88%; /* Lighter, less saturated green */
+    --secondary-foreground: 147 55% 23%; /* Dark Green text on lighter green */
 
-		--muted: 45 30% 92%; /* Muted cream/beige */
-		--muted-foreground: 45 20% 55%; /* Darker muted cream text */
+    --muted: 45 30% 92%; /* Muted cream/beige */
+    --muted-foreground: 45 20% 55%; /* Darker muted cream text */
 
-		--accent: 43 98% 53%; /* Golden Yellow from logo */
-		--accent-foreground: 60 10% 10%; /* Dark text for yellow accent */
+    --accent: 43 98% 53%; /* Golden Yellow from logo */
+    --accent-foreground: 60 10% 10%; /* Dark text for yellow accent */
 
-		--destructive: 0 70% 50%; /* Keeping a standard red for destructive actions */
-		--destructive-foreground: 0 0% 98%;
+    --destructive: 0 70% 50%; /* Keeping a standard red for destructive actions */
+    --destructive-foreground: 0 0% 98%;
 
-		--border: 45 30% 85%; /* Cream/Beige border */
-		--input: 45 30% 90%; /* Slightly darker cream for input background */
-		--ring: 43 98% 60%; /* Golden Yellow for focus rings */
+    --border: 45 30% 85%; /* Cream/Beige border */
+    --input: 45 30% 90%; /* Slightly darker cream for input background */
+    --ring: 43 98% 60%; /* Golden Yellow for focus rings */
 
-		--radius: 0.5rem;
-	}
+    --radius: 0.5rem;
+  }
 }
 
 @layer base {
-	* {
-		@apply border-border;
-	}
-	body {
-		@apply bg-background text-foreground;
-	}
-	h1,
-	h2,
-	h3,
-	h4,
-	h5,
-	h6 {
-		@apply font-serif;
-	}
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-serif;
+  }
 }

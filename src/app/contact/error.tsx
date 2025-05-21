@@ -1,29 +1,22 @@
+'use client'
 
-'use client'; 
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Button } from '@/components/ui/button'
+import { Terminal } from 'lucide-react'
+import { useEffect } from 'react'
 
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
-import { Terminal } from "lucide-react";
-import { useEffect } from 'react';
- 
-export default function ContactErrorPage({
-  error,
-  reset,
-}: {
-  error: Error & { digest?: string };
-  reset: () => void;
-}) {
+export default function ContactErrorPage({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
-    console.error(error);
-  }, [error]);
- 
+    console.error(error)
+  }, [error])
+
   return (
     <div className="container mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-[60vh]">
       <Alert variant="destructive" className="max-w-lg text-center">
         <Terminal className="h-5 w-5 mx-auto mb-2" />
         <AlertTitle className="text-2xl mb-2">Oops! Something went wrong.</AlertTitle>
         <AlertDescription className="mb-4">
-          We couldn't load the contact page. Please try again in a few moments.
+          We couldn&apos;t load the contact page. Please try again in a few moments.
         </AlertDescription>
         <AlertDescription className="text-xs text-muted-foreground mb-4">
           Error details: {error.message}
@@ -37,5 +30,5 @@ export default function ContactErrorPage({
         </Button>
       </Alert>
     </div>
-  );
+  )
 }
