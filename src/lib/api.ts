@@ -1,10 +1,18 @@
-import type { Menu, OrderPayload, OrderResponse } from './types'
+import type { Menu, OrderPayload, OrderResponse, Restaurant } from './types'
 import { API_BASE_URL } from './constants'
 
 export async function fetchMenu(): Promise<Menu> {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/menu/`)
   if (!response.ok) {
     throw new Error('Failed to fetch menu')
+  }
+  return response.json()
+}
+
+export async function fetchRestaurantDetails(): Promise<Restaurant> {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/restaurant/1`)
+  if (!response.ok) {
+    throw new Error('Failed to fetch restaurant')
   }
   return response.json()
 }

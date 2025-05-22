@@ -1,6 +1,6 @@
 'use client'
 
-import type { CartItem, MenuItem } from '@/types'
+import type { CartItem, MenuItem } from '@/lib/types'
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react'
 import { useToast } from '@/hooks/use-toast'
 

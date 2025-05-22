@@ -1,6 +1,6 @@
 'use client'
 
-import type { CartItem } from '@/types'
+import type { CartItem } from '@/lib/types'
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import Image from 'next/legacy/image'

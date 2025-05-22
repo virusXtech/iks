@@ -55,7 +55,7 @@ export default function CheckoutPage() {
     setIsSubmitting(true)
 
     const orderItems: OrderItemPayload[] = cartItems.map(item => ({
-      menu_item: item.id,
+      menu_item_id: item.id,
       quantity: item.quantity,
       price_at_order: item.price,
     }))
@@ -68,14 +68,13 @@ export default function CheckoutPage() {
     let result: IResponseResult | null = null
 
     try {
-      // Basic validation example (you'd typically use a library like Zod here)
       if (!payload.customer_name || payload.customer_name.trim() === '') {
         result = { success: false, message: 'Customer name is required.' }
       }
-      if (!payload.customer_phone || !/^\d{10,15}$/.test(payload.customer_phone)) {
+      if (!payload.customer_phone || !/^\+?[\d\s\-()]{7,20}$/.test(payload.customer_phone)) {
         result = {
           success: false,
-          message: 'Valid customer phone (10-15 digits) is required.',
+          message: 'Valid customer phone is required.',
         }
       }
       if (!payload.items || payload.items.length === 0) {

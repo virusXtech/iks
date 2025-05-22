@@ -25,6 +25,7 @@ export type MenuItem = {
   is_bestseller: boolean
   image: string | null
   category: number
+  available: boolean
 }
 
 export type Category = {
@@ -41,9 +42,9 @@ export interface CartItem extends MenuItem {
 }
 
 export type OrderItemPayload = {
-  menu_item: number
+  menu_item_id: number
   quantity: number
-  price_at_order: number
+  price_at_order: string
 }
 
 export type OrderPayload = {
@@ -73,5 +74,25 @@ export type OrderResponse = {
   instructions: string
   created_at: string
   items: OrderItem[]
-  total_amount?: string
+  total_amount: string
+}
+
+export interface Timings {
+  id: number
+  label: string
+  opening_time: string
+  closing_time: string
+}
+
+export interface Restaurant {
+  id: number
+  name: string
+  address: string
+  phone: string
+  email: string
+  latitude: string | null
+  longitude: string | null
+  is_active: boolean
+  timings: Timings[]
+  google_map_plus_code?: string | null
 }

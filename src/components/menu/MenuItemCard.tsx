@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/legacy/image'
-import type { MenuItem } from '@/types'
+import type { MenuItem } from '@/lib/types'
 import { useCart } from '@/context/CartContext'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
@@ -47,13 +47,19 @@ const MenuItemCard = ({ menuitem }: MenuItemCardProps) => {
         </p>
       </CardContent>
       <CardFooter className="p-4 pt-0">
-        <Button
-          onClick={() => addToCart(menuitem)}
-          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
-        >
-          <PlusCircle className="mr-2 h-5 w-5" />
-          Add to Cart
-        </Button>
+        {menuitem.available ? (
+          <Button
+            onClick={() => addToCart(menuitem)}
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+          >
+            <PlusCircle className="mr-2 h-5 w-5" />
+            Add to Cart
+          </Button>
+        ) : (
+          <Button variant="ghost" className="w-full" disabled>
+            Not Available
+          </Button>
+        )}
       </CardFooter>
     </Card>
   )

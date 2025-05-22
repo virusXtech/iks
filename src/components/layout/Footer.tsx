@@ -1,20 +1,57 @@
-import { RESTAURANT_NAME } from '@/lib/constants'
 import { Mail, MapPin, Phone, Clock, ShoppingCart, Utensils, Info } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-export default function Footer() {
-  const emailAddress = `info@${RESTAURANT_NAME.toLowerCase().replace(/\s+/g, '')}.com`
+import { fetchRestaurantDetails } from '@/lib/api'
+import { Restaurant } from '@/lib/types'
+import { RESTAURANT_NAME } from '@/lib/constants'
+
+export default async function Footer() {
+  let restaurantInfo: Restaurant | null = null
+  let error: string | null = null
+
+  try {
+    restaurantInfo = await fetchRestaurantDetails()
+  } catch (err) {
+    if (err instanceof Error) {
+      error = err.message
+    } else {
+      error = 'An unknown error occurred while fetching restaurant details.'
+    }
+    console.error('Failed to fetch restaurant details for Footer:', error)
+  }
+
+  if (error) {
+    return (
+      <footer className="bg-muted py-12 mt-16">
+        <div className="container mx-auto px-4 text-center text-red-500">
+          Error loading restaurant details: {error}
+          <p className="mt-2 text-sm text-muted-foreground">Please try again later.</p>
+        </div>
+      </footer>
+    )
+  }
+
+  // Render a fallback if restaurantInfo is still null (e.g., API returned no data but no error was thrown)
+  if (!restaurantInfo) {
+    return (
+      <footer className="bg-muted py-12 mt-16">
+        <div className="container mx-auto px-4 text-center text-muted-foreground">
+          No restaurant information available.
+        </div>
+      </footer>
+    )
+  }
+
   return (
     <footer className="bg-muted py-12 mt-16">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10 text-sm">
-          {/* Column 1: Logo and Tagline */}
           <div className="space-y-4">
             <Link href="/" className="inline-block mb-2">
               <Image
                 src="/logo.png"
-                alt={`${RESTAURANT_NAME} Logo`}
+                alt={`${restaurantInfo.name} Logo`}
                 width={120}
                 height={120}
                 className="rounded-full"
@@ -26,7 +63,6 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Column 2: Quick Links */}
           <div>
             <h3 className="text-lg font-semibold text-foreground mb-4">Quick Links</h3>
             <ul className="space-y-2">
@@ -57,57 +93,47 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 3: Contact Info */}
           <div>
             <h3 className="text-lg font-semibold text-foreground mb-4">Contact Info</h3>
             <ul className="space-y-3 text-muted-foreground">
               <li className="flex items-start">
                 <MapPin className="h-5 w-5 mr-3 text-accent flex-shrink-0 mt-0.5" />
-                <span>Ulica Leszno 8/10, Warsaw, Woj. Mazowieckie 01-192</span>
+                <span>{restaurantInfo.address}</span>
               </li>
               <li className="flex items-center">
                 <Phone className="h-5 w-5 mr-3 text-accent flex-shrink-0" />
-                <a href="tel:+15559876543" className="hover:text-primary transition-colors">
-                  (555) 987-6543
+                <a href={`tel:${restaurantInfo.phone}`} className="hover:text-primary transition-colors">
+                  {restaurantInfo.phone}
                 </a>
               </li>
               <li className="flex items-center">
                 <Mail className="h-5 w-5 mr-3 text-accent flex-shrink-0" />
-                <a href={`mailto:${emailAddress}`} className="hover:text-primary transition-colors break-all">
-                  {emailAddress}
+                <a href={`mailto:${restaurantInfo.email}`} className="hover:text-primary transition-colors break-all">
+                  {restaurantInfo.email}
                 </a>
               </li>
             </ul>
           </div>
 
-          {/* Column 4: Opening Hours */}
           <div>
             <h3 className="text-lg font-semibold text-foreground mb-4">Opening Hours</h3>
             <ul className="space-y-2 text-muted-foreground">
-              <li className="flex items-center">
-                <Clock className="h-5 w-5 mr-3 text-accent flex-shrink-0" />
-                <span>Mon - Fri: 12 PM - 10 PM</span>
-              </li>
-              <li className="flex items-center">
-                <Clock className="h-5 w-5 mr-3 text-accent flex-shrink-0" />
-                <span>Sat - Sun: 11 AM - 11 PM</span>
-              </li>
+              {restaurantInfo.timings.map(timing => (
+                <li className="flex items-center">
+                  <Clock className="h-5 w-5 mr-3 text-accent flex-shrink-0" />
+                  <p className="text-sm text-muted-foreground" key={timing.id}>
+                    {timing.label} : {timing.opening_time} - {timing.closing_time}
+                  </p>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
 
         <div className="border-t border-border pt-8 text-center text-xs text-muted-foreground">
           <p>
-            &copy; {new Date().getFullYear()} {RESTAURANT_NAME}. All rights reserved.
+            &copy; {new Date().getFullYear()} {restaurantInfo.name || RESTAURANT_NAME}. All rights reserved.
           </p>
-          {/* Optional: Add links for Privacy Policy, Terms of Service if needed in the future */}
-          {/*
-          <p className="mt-1">
-            <Link href="/privacy-policy" className="hover:text-primary transition-colors">Privacy Policy</Link>
-            <span className="mx-2">|</span>
-            <Link href="/terms-of-service" className="hover:text-primary transition-colors">Terms of Service</Link>
-          </p>
-          */}
         </div>
       </div>
     </footer>

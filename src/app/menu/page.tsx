@@ -4,6 +4,12 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Terminal } from 'lucide-react'
 import { Menu } from '@/lib/types'
 import { fetchMenu } from '@/lib/api'
+import { Metadata } from 'next'
+import { RESTAURANT_NAME, RESTAURANT_SUBTITLE } from '@/lib/constants'
+
+export const metadata: Metadata = {
+  title: `Menu | ${RESTAURANT_NAME} - ${RESTAURANT_SUBTITLE}`,
+}
 
 export default async function MenuPage() {
   let menu: Menu | null
@@ -11,6 +17,7 @@ export default async function MenuPage() {
 
   try {
     menu = await fetchMenu()
+    console.log('🚀 ~ MenuPage ~ menu:', JSON.stringify(menu))
   } catch (e) {
     error = e instanceof Error ? e.message : 'An unknown error occurred while fetching the menu.'
   }
@@ -29,6 +36,7 @@ export default async function MenuPage() {
     )
   }
 
+  // @ts-ignore
   if (!menu || menu.length === 0) {
     return (
       <div className="container mx-auto px-4 py-8">

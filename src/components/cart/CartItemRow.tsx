@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/legacy/image'
-import type { CartItem } from '@/types'
+import type { CartItem } from '@/lib/types'
 import { useCart } from '@/context/CartContext'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'

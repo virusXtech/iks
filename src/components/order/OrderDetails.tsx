@@ -9,12 +9,6 @@ interface OrderDetailsProps {
 }
 
 export default function OrderDetails({ order }: OrderDetailsProps) {
-  const calculateTotalAmount = () => {
-    return order.items.reduce((acc, item) => acc + parseFloat(item.price_at_order) * item.quantity, 0)
-  }
-
-  const totalAmount = order.total_amount ? parseFloat(order.total_amount) : calculateTotalAmount()
-
   return (
     <Card className="w-full max-w-3xl mx-auto shadow-xl">
       <CardHeader className="bg-muted/50 p-6 rounded-t-lg">
@@ -85,7 +79,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
 
         <div className="text-right mt-4 border-t pt-4">
           <p className="text-lg font-semibold">
-            Grand Total: <span className="text-primary">${totalAmount.toFixed(2)}</span>
+            Grand Total: <span className="text-primary">${Number(order.total_amount).toFixed(2)}</span>
           </p>
         </div>
       </CardContent>
