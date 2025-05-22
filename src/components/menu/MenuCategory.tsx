@@ -1,12 +1,16 @@
-import type { Icon, MenuItem } from '@/types'
+import type { Icon, MenuItem } from '@/lib/types'
 import MenuItemCard from './MenuItemCard'
 import * as LucideIcons from 'lucide-react'
 
-export const CategoryIcon = ({ icon, css_class: cssClass }: Icon) => {
+export type CategoryIconProps = {
+  icon: Icon
+}
+
+export const CategoryIcon = ({ icon }: CategoryIconProps) => {
   const IconComponent = LucideIcons[icon]
 
   const iconProps = {
-    className: cssClass ? cssClass : `h-8 w-8 mr-3 text-primary`,
+    className: `h-8 w-8 mr-3 text-primary`,
   }
 
   return IconComponent ? <IconComponent {...iconProps} /> : <></>

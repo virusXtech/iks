@@ -59,7 +59,7 @@ export default async function MenuPage() {
           >
             <AccordionTrigger className="px-6 py-4 hover:no-underline text-left w-full">
               <div className="flex items-center">
-                <CategoryIcon {...category.icon} />
+                <CategoryIcon icon={category.icon} />
                 <span className="text-2xl font-serif font-semibold text-primary">{category.name}</span>
               </div>
             </AccordionTrigger>

@@ -1,7 +1,19 @@
-export type Icon = {
-  icon: string
-  css_class: string | null
-}
+export type Icon =
+  | 'Utensils'
+  | 'Soup'
+  | 'UtensilsCrossed'
+  | 'Cookie'
+  | 'Wheat'
+  | 'CakeSlice'
+  | 'CupSoda'
+  | 'Beer'
+  | 'Wine'
+  | 'Shell'
+  | 'Drumstick'
+  | 'Salad'
+  | 'Pizza'
+  | 'Sandwich'
+  | 'Coffee'
 
 export type MenuItem = {
   id: number
