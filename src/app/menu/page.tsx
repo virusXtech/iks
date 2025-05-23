@@ -36,7 +36,7 @@ export default async function MenuPage() {
     )
   }
 
-  // @ts-ignore
+  // @ts-expect-error menu will always be defined
   if (!menu || menu.length === 0) {
     return (
       <div className="container mx-auto px-4 py-8">

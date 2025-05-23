@@ -93,7 +93,7 @@ export default function ContactFormClient() {
 
       toast({ title: 'Message Sent!', description: 'Thank you for reaching out.' })
       form.reset()
-    } catch (error) {
+    } catch {
       toast({
         title: 'Error',
         description: 'Failed to send message. Please try again.',

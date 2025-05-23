@@ -85,14 +85,9 @@ export interface Timings {
 }
 
 export interface Restaurant {
-  id: number
-  name: string
   address: string
   phone: string
   email: string
-  latitude: string | null
-  longitude: string | null
-  is_active: boolean
+  mapURI: string
   timings: Timings[]
-  google_map_plus_code?: string | null
 }

@@ -1,37 +1,9 @@
 import { Mail, MapPin, Phone, Clock, ShoppingCart, Utensils, Info } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-
-import { fetchRestaurantDetails } from '@/lib/api'
-import { Restaurant } from '@/lib/types'
-import { RESTAURANT_NAME } from '@/lib/constants'
+import { RESTAURANT_NAME, RESTAURANT_INFO as restaurantInfo } from '@/lib/constants'
 
 export default async function Footer() {
-  let restaurantInfo: Restaurant | null = null
-  let error: string | null = null
-
-  try {
-    restaurantInfo = await fetchRestaurantDetails()
-  } catch (err) {
-    if (err instanceof Error) {
-      error = err.message
-    } else {
-      error = 'An unknown error occurred while fetching restaurant details.'
-    }
-    console.error('Failed to fetch restaurant details for Footer:', error)
-  }
-
-  if (error) {
-    return (
-      <footer className="bg-muted py-12 mt-16">
-        <div className="container mx-auto px-4 text-center text-red-500">
-          Error loading restaurant details: {error}
-          <p className="mt-2 text-sm text-muted-foreground">Please try again later.</p>
-        </div>
-      </footer>
-    )
-  }
-
   // Render a fallback if restaurantInfo is still null (e.g., API returned no data but no error was thrown)
   if (!restaurantInfo) {
     return (
@@ -51,7 +23,7 @@ export default async function Footer() {
             <Link href="/" className="inline-block mb-2">
               <Image
                 src="/logo.png"
-                alt={`${restaurantInfo.name} Logo`}
+                alt={`${RESTAURANT_NAME} Logo`}
                 width={120}
                 height={120}
                 className="rounded-full"
@@ -119,7 +91,7 @@ export default async function Footer() {
             <h3 className="text-lg font-semibold text-foreground mb-4">Opening Hours</h3>
             <ul className="space-y-2 text-muted-foreground">
               {restaurantInfo.timings.map(timing => (
-                <li className="flex items-center">
+                <li className="flex items-center" key={timing.id}>
                   <Clock className="h-5 w-5 mr-3 text-accent flex-shrink-0" />
                   <p className="text-sm text-muted-foreground" key={timing.id}>
                     {timing.label} : {timing.opening_time} - {timing.closing_time}
@@ -132,7 +104,7 @@ export default async function Footer() {
 
         <div className="border-t border-border pt-8 text-center text-xs text-muted-foreground">
           <p>
-            &copy; {new Date().getFullYear()} {restaurantInfo.name || RESTAURANT_NAME}. All rights reserved.
+            &copy; {new Date().getFullYear()} {RESTAURANT_NAME}. All rights reserved.
           </p>
         </div>
       </div>
