@@ -60,10 +60,9 @@ export default async function ContactPage() {
               <div className="aspect-[16/10] rounded-md overflow-hidden border">
                 <iframe
                   src={restaurantInfo.mapURI}
-                  width="600"
-                  height="375"
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
+                  className="w-full h-full"
                 ></iframe>
               </div>
             </CardContent>
