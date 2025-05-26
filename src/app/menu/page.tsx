@@ -7,15 +7,9 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Terminal } from 'lucide-react'
 import { Menu } from '@/lib/types'
 import { fetchMenu } from '@/lib/api'
-import { Metadata } from 'next'
-import { RESTAURANT_NAME, RESTAURANT_SUBTITLE } from '@/lib/constants'
-
-export const metadata: Metadata = {
-  title: `Menu | ${RESTAURANT_NAME} - ${RESTAURANT_SUBTITLE}`,
-}
 
 export default async function MenuPage() {
-  const [menu, setMenu] = useState(null)
+  const [menu, setMenu] = useState<Menu | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
 
@@ -33,7 +27,7 @@ export default async function MenuPage() {
       } finally {
         setIsLoading(false)
       }
-    })
+    })()
   })
 
   if (error) {
