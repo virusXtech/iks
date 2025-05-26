@@ -1,3 +1,6 @@
+'use client'
+
+import {useEffect, useState} from 'react';
 import MenuCategoryDisplay, { CategoryIcon } from '@/components/menu/MenuCategory'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -12,15 +15,26 @@ export const metadata: Metadata = {
 }
 
 export default async function MenuPage() {
-  let menu: Menu | null
-  let error: string | null = null
+  const [menu, setMenu] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(null)
 
-  try {
-    menu = await fetchMenu()
-    console.log('🚀 ~ MenuPage ~ menu:', JSON.stringify(menu))
-  } catch (e) {
-    error = e instanceof Error ? e.message : 'An unknown error occurred while fetching the menu.'
-  }
+  useEffect(() => {
+    setIsLoading(true)
+    setMenu(null)
+    setError(null)
+    (async() => {
+      try {
+        const response = await fetchMenu()
+        setMenu(response)
+      } catch (e) {
+        const errMsg = e instanceof Error ? e.message : 'An unknown error occurred while fetching the menu.'
+        setError(errMsg)
+      } finally {
+        setIsLoading(false)
+      }
+    })
+  })
 
   if (error) {
     return (
