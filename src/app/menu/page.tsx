@@ -14,21 +14,24 @@ export default async function MenuPage() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    setIsLoading(true)
-    setMenu(null)
-    setError(null)
-    (async() => {
+    setIsLoading(true);
+    setMenu(null);
+    setError(null);
+
+    async function loadMenu() {
       try {
-        const response = await fetchMenu()
-        setMenu(response)
-      } catch (e) {
-        const errMsg = e instanceof Error ? e.message : 'An unknown error occurred while fetching the menu.'
-        setError(errMsg)
+        const response = await fetchMenu();
+        setMenu(response);
+      } catch (error) {
+        const errMsg = error instanceof Error ? error.message : 'An unknown error occurred while fetching the menu.';
+        setError(errMsg);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
-    })()
-  })
+    }
+
+    loadMenu();
+  }, []); 
 
   if (error) {
     return (
